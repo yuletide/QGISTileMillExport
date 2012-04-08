@@ -56,12 +56,19 @@ class QGISTileMillExport:
             mss = ''
             attr = str(renderer.classAttribute())
             for i,ran in enumerate(renderer.ranges()):
+                r = ran.symbol().symbolLayer(0).color().red()
+                g = ran.symbol().symbolLayer(0).color().green()
+                b = ran.symbol().symbolLayer(0).color().blue()
+                a = ran.symbol().symbolLayer(0).color().alpha()
+                color = "rgba({},{},{},{})".format(r,g,b,a)
+                line_symbol = "line-color: {};".format(color)
+                
                 if i==0:
-                    mss += "[{} <= {}]{{ {} }}\n".format(attr, ran.upperValue(), str(ran.symbol().dump()))
+                    mss += "[{} <= {}]{{ {} }}\n".format(attr, ran.upperValue(), line_symbol)
                 elif i==len(renderer.ranges())-1:
-                    mss+= "[{} > {}]{{ {} }}\n".format(attr, ran.lowerValue(), str(ran.symbol().dump()))
+                    mss+= "[{} > {}]{{ {} }}\n".format(attr, ran.lowerValue(), line_symbol)
                 else:
-                    mss += "[{attr} > {lower}][{attr} <= {upper}]{{ {sym} }}\n".format(attr=attr, lower=ran.lowerValue(), upper=ran.upperValue(), sym=str(ran.symbol().dump()))
+                    mss += "[{attr} > {lower}][{attr} <= {upper}]{{ {sym} }}\n".format(attr=attr, lower=ran.lowerValue(), upper=ran.upperValue(), sym=line_symbol)
             QMessageBox.information(None,"TileMill Exporter",mss)
             return
 
