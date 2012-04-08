@@ -64,11 +64,11 @@ class QGISTileMillExport:
                 line_symbol = "line-color: {};".format(color)
                 
                 if i==0:
-                    mss += "[{} <= {}]{{ {} }}\n".format(attr, ran.upperValue(), line_symbol)
+                    mss += "[{} <= {:.5}]{{ {} }}\n".format(attr, ran.upperValue(), line_symbol)
                 elif i==len(renderer.ranges())-1:
-                    mss+= "[{} > {}]{{ {} }}\n".format(attr, ran.lowerValue(), line_symbol)
+                    mss+= "[{} > {:.5}]{{ {} }}\n".format(attr, ran.lowerValue(), line_symbol)
                 else:
-                    mss += "[{attr} > {lower}][{attr} <= {upper}]{{ {sym} }}\n".format(attr=attr, lower=ran.lowerValue(), upper=ran.upperValue(), sym=line_symbol)
+                    mss += "[{attr} > {lower:.5}][{attr} <= {upper:.5}]{{ {sym} }}\n".format(attr=attr, lower=ran.lowerValue(), upper=ran.upperValue(), sym=line_symbol)
             QMessageBox.information(None,"TileMill Exporter",mss)
             return
 
