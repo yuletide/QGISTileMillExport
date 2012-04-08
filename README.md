@@ -13,7 +13,9 @@ if that doesn't work try
 
 1. Select a vector layer with a graduated renderer in the table of contents
 2. Click the toolbar button for the plugin
-3. Copy the text that pops up and paste into TileMill
+3. Copy the text that pops up and paste into TileMill 
 
 ![img](https://github.com/yuletide/QGISTileMillExport/raw/master/dialog.png)
 ![img](https://github.com/yuletide/septa_frequency_map/raw/master/septa.png)
+
+Yay.
