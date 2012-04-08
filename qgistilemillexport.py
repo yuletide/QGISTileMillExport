@@ -49,8 +49,29 @@ class QGISTileMillExport:
         self.iface.removePluginMenu("&Export Layer to TileMIll",self.action)
         self.iface.removeToolBarIcon(self.action)
 
+
     # run method that performs all the real work
     def run(self):
+        def processGraduatedRenderer(renderer):
+            mss = ''
+            attr = str(renderer.classAttribute())
+            for i,ran in enumerate(renderer.ranges()):
+                if i==0:
+                    mss += "[{} <= {}]{{ {} }}\n".format(attr, ran.upperValue(), str(ran.symbol().dump()))
+                elif i==len(renderer.ranges())-1:
+                    mss+= "[{} > {}]{{ {} }}\n".format(attr, ran.lowerValue(), str(ran.symbol().dump()))
+                else:
+                    mss += "[{attr} > {lower}][{attr} <= {upper}]{{ {sym} }}\n".format(attr=attr, lower=ran.lowerValue(), upper=ran.upperValue(), sym=str(ran.symbol().dump()))
+            QMessageBox.information(None,"TileMill Exporter",mss)
+            return
+
+            '''for ran in rendererV2.ranges():
+              print "%f - %f: %s %s" % (
+                  range.lowerValue(),
+                  range.upperValue(),
+                  range.label(),
+                  str(range.symbol())
+                  )'''
         # get the currently active layer (if any)
         layer = self.iface.mapCanvas().currentLayer()
         if not hasattr(layer, 'isUsingRendererV2'):
@@ -60,7 +81,7 @@ class QGISTileMillExport:
         if layer:
             if layer.type() == layer.VectorLayer:
                 if layer.isUsingRendererV2() and layer.rendererV2().type() == 'graduatedSymbol':
-                    processGraduatedRenderer(layer.rendererV2())
+                    processGraduatedRenderer(renderer=layer.rendererV2())
                     return
             QMessageBox.information(None,"TileMill Exporter","Unsupported renderer")
             return
@@ -78,18 +99,5 @@ class QGISTileMillExport:
             # do something useful (delete the line containing pass and
             # substitute with your code
             pass
-    def processGraduatedRenderer(renderer):
-        attr = str(renderer.classAttribute)
-        mss = ''
-        for range in renderer.ranges():
-            mss += range.dump()
-        QMessageBox.information(None,"TileMill Exporter",mss)
-        return
         
-        '''for ran in rendererV2.ranges():
-          print "%f - %f: %s %s" % (
-              ran.lowerValue(),
-              ran.upperValue(),
-              ran.label(),
-              str(ran.symbol())
-              )'''
+        
