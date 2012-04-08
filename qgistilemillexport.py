@@ -51,24 +51,21 @@ class QGISTileMillExport:
 
     # run method that performs all the real work
     def run(self):
-	# get the currently active layer (if any)
-	layer = self.iface.mapCanvas().currentLayer()
-	if not hasattr(layer, 'isUsingRendererV2'):
-	    QMessageBox.information(None,"TileMill Exporter", "Please upgrade your version of qgis")
-	    return
-	# test for valid vector layer
-	if layer:
-	    if layer.type() == layer.VectorLayer:
-		if layer.isUsingRendererV2() and layer.rendererV2().type() == 'graduatedSymbol':
-		    str = ''
-		    for range in layer.rendererV2().ranges():
-			str += range.dump()
-		    QMessageBox.information(None,"TileMill Exporter",str)
-		    return
-		QMessageBox.information(None,"TileMill Exporter","Unsupported renderer")
-		return
-	QMessageBox.information(None,"TileMill Exporter", "A vector layer must be selected")
-	return
+        # get the currently active layer (if any)
+        layer = self.iface.mapCanvas().currentLayer()
+        if not hasattr(layer, 'isUsingRendererV2'):
+            QMessageBox.information(None,"TileMill Exporter", "Please upgrade your version of qgis")
+            return
+        # test for valid vector layer
+        if layer:
+            if layer.type() == layer.VectorLayer:
+                if layer.isUsingRendererV2() and layer.rendererV2().type() == 'graduatedSymbol':
+                    processGraduatedRenderer(layer.rendererV2())
+                    return
+            QMessageBox.information(None,"TileMill Exporter","Unsupported renderer")
+            return
+        QMessageBox.information(None,"TileMill Exporter", "A vector layer must be selected")
+        return
 
 
         # create and show the dialog
@@ -81,3 +78,18 @@ class QGISTileMillExport:
             # do something useful (delete the line containing pass and
             # substitute with your code
             pass
+    def processGraduatedRenderer(renderer):
+        attr = str(renderer.classAttribute)
+        mss = ''
+        for range in renderer.ranges():
+            mss += range.dump()
+        QMessageBox.information(None,"TileMill Exporter",mss)
+        return
+        
+        '''for ran in rendererV2.ranges():
+          print "%f - %f: %s %s" % (
+              ran.lowerValue(),
+              ran.upperValue(),
+              ran.label(),
+              str(ran.symbol())
+              )'''
