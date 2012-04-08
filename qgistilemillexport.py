@@ -60,7 +60,10 @@ class QGISTileMillExport:
                 g = ran.symbol().symbolLayer(0).color().green()
                 b = ran.symbol().symbolLayer(0).color().blue()
                 a = ran.symbol().symbolLayer(0).color().alpha()
-                color = "rgba({},{},{},{})".format(r,g,b,a)
+                if float(a) < 1:
+                    color = "rgba({},{},{},{})".format(r,g,b,a)
+                else:
+                    color = "rgb({},{},{})".format(r,g,b)
                 line_symbol = "line-color: {};".format(color)
                 
                 if i==0:
