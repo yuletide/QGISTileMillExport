@@ -53,16 +53,19 @@ class QGISTileMillExport:
     def run(self):
 	# get the currently active layer (if any)
 	layer = self.iface.mapCanvas().currentLayer()
+	if not hasattr(layer, 'isUsingRendererV2'):
+	    QMessageBox.information(None,"TileMill Exporter", "Please upgrade your version of qgis")
+	    return
 	# test for valid vector layer
 	if layer:
 	    if layer.type() == layer.VectorLayer:
-		if layer.rendererV2().type() == 'graduatedSymbol':
+		if layer.isUsingRendererV2() and layer.rendererV2().type() == 'graduatedSymbol':
 		    str = ''
 		    for range in layer.rendererV2().ranges():
 			str += range.dump()
 		    QMessageBox.information(None,"TileMill Exporter",str)
 		    return
-		QMessageBox.information(None,"TileMill Exporter","Layer is ok")
+		QMessageBox.information(None,"TileMill Exporter","Unsupported renderer")
 		return
 	QMessageBox.information(None,"TileMill Exporter", "A vector layer must be selected")
 	return
