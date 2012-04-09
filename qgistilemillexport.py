@@ -49,39 +49,40 @@ class QGISTileMillExport:
         self.iface.removePluginMenu("&Export Layer to TileMIll",self.action)
         self.iface.removeToolBarIcon(self.action)
 
+    def processGraduatedRenderer(self, renderer):
+        mss = ''
+        attr = str(renderer.classAttribute())
+        for i,ran in enumerate(renderer.ranges()):
+            r = ran.symbol().symbolLayer(0).color().red()
+            g = ran.symbol().symbolLayer(0).color().green()
+            b = ran.symbol().symbolLayer(0).color().blue()
+            a = ran.symbol().symbolLayer(0).color().alpha()
+            if float(a) < 1:
+                color = "rgba({},{},{},{})".format(r,g,b,a)
+            else:
+                color = "rgb({},{},{})".format(r,g,b)
+            line_symbol = "line-color: {};".format(color)
+            
+            if i==0:
+                mss += "[{} <= {:.5}]{{ {} }}\n".format(attr, ran.upperValue(), line_symbol)
+            elif i==len(renderer.ranges())-1:
+                mss+= "[{} > {:.5}]{{ {} }}\n".format(attr, ran.lowerValue(), line_symbol)
+            else:
+                mss += "[{attr} > {lower:.5}][{attr} <= {upper:.5}]{{ {sym} }}\n".format(attr=attr, lower=ran.lowerValue(), upper=ran.upperValue(), sym=line_symbol)
+        QMessageBox.information(None,"TileMill Exporter",mss)
+        return
+
+        '''for ran in rendererV2.ranges():
+          print "%f - %f: %s %s" % (
+              range.lowerValue(),
+              range.upperValue(),
+              range.label(),
+              str(range.symbol())
+              )'''
 
     # run method that performs all the real work
     def run(self):
-        def processGraduatedRenderer(renderer):
-            mss = ''
-            attr = str(renderer.classAttribute())
-            for i,ran in enumerate(renderer.ranges()):
-                r = ran.symbol().symbolLayer(0).color().red()
-                g = ran.symbol().symbolLayer(0).color().green()
-                b = ran.symbol().symbolLayer(0).color().blue()
-                a = ran.symbol().symbolLayer(0).color().alpha()
-                if float(a) < 1:
-                    color = "rgba({},{},{},{})".format(r,g,b,a)
-                else:
-                    color = "rgb({},{},{})".format(r,g,b)
-                line_symbol = "line-color: {};".format(color)
-                
-                if i==0:
-                    mss += "[{} <= {:.5}]{{ {} }}\n".format(attr, ran.upperValue(), line_symbol)
-                elif i==len(renderer.ranges())-1:
-                    mss+= "[{} > {:.5}]{{ {} }}\n".format(attr, ran.lowerValue(), line_symbol)
-                else:
-                    mss += "[{attr} > {lower:.5}][{attr} <= {upper:.5}]{{ {sym} }}\n".format(attr=attr, lower=ran.lowerValue(), upper=ran.upperValue(), sym=line_symbol)
-            QMessageBox.information(None,"TileMill Exporter",mss)
-            return
-
-            '''for ran in rendererV2.ranges():
-              print "%f - %f: %s %s" % (
-                  range.lowerValue(),
-                  range.upperValue(),
-                  range.label(),
-                  str(range.symbol())
-                  )'''
+        
         # get the currently active layer (if any)
         layer = self.iface.mapCanvas().currentLayer()
         if not hasattr(layer, 'isUsingRendererV2'):
@@ -91,7 +92,7 @@ class QGISTileMillExport:
         if layer:
             if layer.type() == layer.VectorLayer:
                 if layer.isUsingRendererV2() and layer.rendererV2().type() == 'graduatedSymbol':
-                    processGraduatedRenderer(renderer=layer.rendererV2())
+                    self.processGraduatedRenderer(renderer=layer.rendererV2())
                     return
             QMessageBox.information(None,"TileMill Exporter","Unsupported renderer")
             return
