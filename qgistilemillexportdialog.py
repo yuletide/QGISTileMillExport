@@ -33,8 +33,10 @@ class QGISTileMillExportDialog(QtGui.QDialog):
         self.ui.layerComboBox.insertItems(0, [la.name() for la in self.vectorLayers])
     
     def new_layer_selected(self):
-        QMessageBox.information(None,"TileMill Exporter","New Layer Selected: "+self.ui.layerComboBox.currentText())
-        
+        #QtGui.QMessageBox.information(None,"TileMill Exporter","New Layer Selected: "+self.ui.layerComboBox.currentText())
+        self.ui.mssTextBox.clear()
+        self.ui.mssTextBox.appendPlainText(self.process_current_layer())
+        self.ui.mssTextBox.selectAll()
     
     def get_current_layer(self):
         layerName = self.ui.layerComboBox.currentText()
@@ -43,6 +45,13 @@ class QGISTileMillExportDialog(QtGui.QDialog):
             if layer.name() == layerName:
                 currentLayer = layer
         return currentLayer
+    
+    def process_current_layer(self):
+        return self.process_layer(self.get_current_layer())
+    
+    def process_layer(self, layer):
+        if layer.isUsingRendererV2() and layer.rendererV2().type() == 'graduatedSymbol':
+            return self.process_graduated_renderer(layer.rendererV2())
     
     def process_graduated_renderer(self, renderer):
         mss = ''
@@ -64,5 +73,4 @@ class QGISTileMillExportDialog(QtGui.QDialog):
                 mss+= "[{} > {:.5}]{{ {} }}\n".format(attr, ran.lowerValue(), line_symbol)
             else:
                 mss += "[{attr} > {lower:.5}][{attr} <= {upper:.5}]{{ {sym} }}\n".format(attr=attr, lower=ran.lowerValue(), upper=ran.upperValue(), sym=line_symbol)
-        QMessageBox.information(None,"TileMill Exporter",mss)
-        return
+        return mss

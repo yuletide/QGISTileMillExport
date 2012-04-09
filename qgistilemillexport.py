@@ -86,7 +86,7 @@ class QGISTileMillExport:
         vectorLayers = []
         for layer in availableLayers.values():
             if layer.type() == layer.VectorLayer:
-                if is_supported_layer(layer):
+                if self.is_supported_layer(layer):
                     vectorLayers.append(layer)
         return vectorLayers
 
@@ -99,20 +99,20 @@ class QGISTileMillExport:
         vectorLayers = self.get_vector_layers()
         
         # get the currently active layer (if any)
-        layer = self.iface.mapCanvas().currentLayer()
-        if not hasattr(layer, 'isUsingRendererV2'):
-            QMessageBox.information(None,"TileMill Exporter", "Please upgrade your version of qgis")
-            return
-        # test for valid vector layer
-        if layer:
-            if layer.type() == layer.VectorLayer:
-                if layer.isUsingRendererV2() and layer.rendererV2().type() == 'graduatedSymbol':
-                    self.processGraduatedRenderer(renderer=layer.rendererV2())
-                    return
-            QMessageBox.information(None,"TileMill Exporter","Unsupported renderer")
-            return
-        QMessageBox.information(None,"TileMill Exporter", "A vector layer must be selected")
-        #return
+        # layer = self.iface.mapCanvas().currentLayer()
+        # if not hasattr(layer, 'isUsingRendererV2'):
+        #     QMessageBox.information(None,"TileMill Exporter", "Please upgrade your version of qgis")
+        #     return
+        # # test for valid vector layer
+        # if layer:
+        #     if layer.type() == layer.VectorLayer:
+        #         if layer.isUsingRendererV2() and layer.rendererV2().type() == 'graduatedSymbol':
+        #             self.processGraduatedRenderer(renderer=layer.rendererV2())
+        #             return
+        #     QMessageBox.information(None,"TileMill Exporter","Unsupported renderer")
+        #     #return
+        # QMessageBox.information(None,"TileMill Exporter", "A vector layer must be selected")
+        # #return
 
 
         # create and show the dialog
