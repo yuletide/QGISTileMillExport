@@ -80,8 +80,17 @@ class QGISTileMillExport:
               str(range.symbol())
               )'''
 
+    def get_vector_layers(self):
+        availableLayers = self.mapLayerRegistry.mapLayers()
+        vectorLayers = []
+        for layer in availableLayers.values():
+            if layer.type() == 0: #vector layer
+                vectorLayers.append(layer)
+        return vectorLayers
+
     # run method that performs all the real work
     def run(self):
+        vectorLayers = self.get_vector_layers()
         
         # get the currently active layer (if any)
         layer = self.iface.mapCanvas().currentLayer()
@@ -110,5 +119,6 @@ class QGISTileMillExport:
             # do something useful (delete the line containing pass and
             # substitute with your code
             pass
+    
         
         
