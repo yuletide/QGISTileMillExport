@@ -32,6 +32,7 @@ class QGISTileMillExport:
     def __init__(self, iface):
         # Save reference to the QGIS interface
         self.iface = iface
+        self.mapLayerRegistry = QgsMapLayerRegistry.instance()
 
     def initGui(self):
         # Create action that will start plugin configuration
