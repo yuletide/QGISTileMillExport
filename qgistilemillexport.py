@@ -85,9 +85,14 @@ class QGISTileMillExport:
         availableLayers = self.mapLayerRegistry.mapLayers()
         vectorLayers = []
         for layer in availableLayers.values():
-            if layer.type() == 0: #vector layer
-                vectorLayers.append(layer)
+            if layer.type() == layer.VectorLayer:
+                if is_supported_layer(layer):
+                    vectorLayers.append(layer)
         return vectorLayers
+
+    def is_supported_layer(self, layer):
+        if layer.isUsingRendererV2() and layer.rendererV2().type() == 'graduatedSymbol':
+            return True
 
     # run method that performs all the real work
     def run(self):
@@ -107,11 +112,11 @@ class QGISTileMillExport:
             QMessageBox.information(None,"TileMill Exporter","Unsupported renderer")
             return
         QMessageBox.information(None,"TileMill Exporter", "A vector layer must be selected")
-        return
+        #return
 
 
         # create and show the dialog
-        dlg = QGISTileMillExportDialog()
+        dlg = QGISTileMillExportDialog(vectorLayers)
         # show the dialog
         dlg.show()
         result = dlg.exec_()
