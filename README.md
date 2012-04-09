@@ -11,9 +11,14 @@ if that doesn't work try
 
 #Usage
 
-1. Select a vector layer with a graduated renderer in the table of contents
-2. Click the toolbar button for the plugin
-3. Copy the text that pops up and paste into TileMill 
+1. Click the toolbar button or go to Plugins --> Export Layer to TileMill --> Export Layer to TileMill
+2. Select the layer you'd like to use (currently everything gets output as line-color)
+3. Copy the mss and paste into tilemill
+
+## Limitations
+
+- Only supports graduated renderers
+- Everything is output as a line-color style currently
 
 ![img](https://github.com/yuletide/QGISTileMillExport/raw/master/dialog.png)
 ![img](https://github.com/yuletide/septa_frequency_map/raw/master/septa.png)
