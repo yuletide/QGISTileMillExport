@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_qgistilemillexport.ui'
 #
-# Created: Mon Apr  9 12:32:41 2012
+# Created: Mon Apr  9 12:54:18 2012
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,10 +26,10 @@ class Ui_QGISTileMillExport(object):
         self.label.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label.setObjectName(_fromUtf8("label"))
         self.layerComboBox = QtGui.QComboBox(QGISTileMillExport)
-        self.layerComboBox.setGeometry(QtCore.QRect(50, 39, 111, 26))
+        self.layerComboBox.setGeometry(QtCore.QRect(50, 40, 171, 26))
         self.layerComboBox.setObjectName(_fromUtf8("layerComboBox"))
         self.label_3 = QtGui.QLabel(QGISTileMillExport)
-        self.label_3.setGeometry(QtCore.QRect(11, 41, 34, 16))
+        self.label_3.setGeometry(QtCore.QRect(10, 40, 34, 20))
         self.label_3.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_3.setObjectName(_fromUtf8("label_3"))
         self.buttonBox = QtGui.QDialogButtonBox(QGISTileMillExport)
@@ -44,7 +44,7 @@ class Ui_QGISTileMillExport(object):
         QtCore.QMetaObject.connectSlotsByName(QGISTileMillExport)
 
     def retranslateUi(self, QGISTileMillExport):
-        QGISTileMillExport.setWindowTitle(QtGui.QApplication.translate("QGISTileMillExport", "QGISTileMillExport", None, QtGui.QApplication.UnicodeUTF8))
+        QGISTileMillExport.setWindowTitle(QtGui.QApplication.translate("QGISTileMillExport", "Generate TileMill MSS", None, QtGui.QApplication.UnicodeUTF8))
         self.label.setText(QtGui.QApplication.translate("QGISTileMillExport", "MSS", None, QtGui.QApplication.UnicodeUTF8))
         self.label_3.setText(QtGui.QApplication.translate("QGISTileMillExport", "Layer", None, QtGui.QApplication.UnicodeUTF8))
 
