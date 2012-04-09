@@ -18,7 +18,7 @@ if that doesn't work try
 ## Limitations
 
 - Only supports graduated renderers
-- Everything is output as a line-color style currently
+- Everything is output as a line-color style, not sure if it works with polygon layers
 
 ![img](https://github.com/yuletide/QGISTileMillExport/raw/master/dialog.png)
 ![img](https://github.com/yuletide/septa_frequency_map/raw/master/septa.png)
